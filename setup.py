@@ -12,6 +12,6 @@ setup(
     license = 'MIT',
     zip_safe = False,
     packages = [''],
-    install_requires = ['Pillow'],
+    install_requires = ['Pillow', 'Eel'],
     include_package_data = True
 )

@@ -75,7 +75,6 @@ class EPuckReader(Thread):
         data = json.loads(struct.unpack('!{}s'.format(len(data)), data)[0].decode())
         data = Namespace(**data)
 
-
         with self._data_lock:
             self._data = data
             self._data_lock.notify_all()
