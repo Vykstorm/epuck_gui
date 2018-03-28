@@ -8,11 +8,15 @@
     <script type="text/javascript" src="/eel.js"></script>
 </head>
 <body>
+    <!-- Panel donde se indica medidas de rendimiento del controlador e-puck -->
     <div id="performance_panel">
         <p class="performance_label"><span id="steps_per_second"></span> steps per second</p>
         <p class="performance_label">Update time: <span id="update_time"></span> mlls per step</p>
         <p class="performance_label">Think time: <span id="think_time"></span> mlls per step</p>
     </div>
+
+    <!-- Imágen del sensor de visión -->
+    <img id="vision_sensor" width="250px" height="250px"/>
 
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/epuck.js"></script>

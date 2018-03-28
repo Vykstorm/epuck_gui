@@ -9,13 +9,14 @@ from epuck_reader import EPuckReader
 static_path = 'static'
 
 app_options = {
-    'mode' : 'chrome-app',
+    'mode' : 'chrome',
     'host' : 'localhost',
     'port' : 8000,
     'chromeFlags' : []
 }
 
 
+# Funciones expuestas para ser invocadas desde Javascript
 
 @eel.expose
 def get_prox_sensors():
@@ -34,8 +35,7 @@ def get_light_sensor():
 @eel.expose
 def get_vision_sensor():
     image = epuck.data.vision_sensor
-    # TODO
-    return None
+    return image
 
 @eel.expose
 def get_vision_sensor_params():
