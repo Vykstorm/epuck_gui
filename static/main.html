@@ -4,19 +4,111 @@
     <meta charset="UTF-8">
     <title>E-Puck controller monitor</title>
 
+    <!--<link rel="stylesheet" href="css/w3.min.css"/> -->
     <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/sensors.css"/>
     <script type="text/javascript" src="/eel.js"></script>
 </head>
 <body>
     <!-- Panel donde se indica medidas de rendimiento del controlador e-puck -->
-    <div id="performance_panel">
-        <p class="performance_label"><span id="steps_per_second"></span> steps per second</p>
-        <p class="performance_label">Update time: <span id="update_time"></span> mlls per step</p>
-        <p class="performance_label">Think time: <span id="think_time"></span> mlls per step</p>
+    <div id="performance_info_panel">
+        <table>
+            <tr>
+                <td>
+                    <span id="steps_per_second"></span> steps per second
+                </td>
+            </tr>
+            <tr>
+                <td>
+                   Update time:
+                </td>
+                <td id="update_time">
+
+                </td>
+                <td>
+                    mlls per step
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Think time:
+                </td>
+                <td id="think_time">
+
+                </td>
+                <td>
+                    mlls per step
+                </td>
+            </tr>
+        </table>
     </div>
 
     <!-- Imágen del sensor de visión -->
-    <img id="vision_sensor" width="250px" height="250px"/>
+    <div id="vision_sensor_panel">
+        <img id="vision_sensor" width="250px" height="250px"/>
+        <table>
+            <tr>
+                <td>Camera mode: </td>
+                <td id="vision_sensor_mode"></td>
+            </tr>
+            <tr>
+                <td>Resolution: </td>
+                <td id="vision_sensor_resolution"></td>
+            </tr>
+            <tr>
+                <td>Zoom: </td>
+                <td id="vision_sensor_zoom"></td>
+            </tr>
+        </table>
+        <p></p>
+    </div>
+
+    <!-- Información de los sensores de proximidad -->
+    <div id="prox_sensors_panel">
+        <img id="epuck_top_view" src="images/epuck-top.png" />
+        <div class="prox_sensor" id="ir0">
+            <img src="images/signal1.png" />
+        </div>
+        <div class="prox_sensor" id="ir1">
+            <img src="images/signal1.png" />
+        </div>
+        <div class="prox_sensor" id="ir2">
+            <img src="images/signal1.png" />
+        </div>
+        <div class="prox_sensor" id="ir3">
+            <img src="images/signal1.png" />
+        </div>
+        <div class="prox_sensor" id="ir4">
+            <img src="images/signal1.png" />
+        </div>
+        <div class="prox_sensor" id="ir5">
+            <img src="images/signal1.png" />
+        </div>
+        <div class="prox_sensor" id="ir6">
+            <img src="images/signal1.png" />
+        </div>
+
+        <div class="prox_sensor" id="ir7">
+            <img src="images/signal1.png" />
+        </div>
+    </div>
+
+    <!-- Información de los sensores de suelo -->
+
+
+    <!-- Información de los motores -->
+    <table id="motors_info_panel">
+        <tr>
+            <td>
+                Left motor speed: <span id="left_motor"></span> rpm
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Right motor speed: <span id="right_motor"></span> rpm
+            </td>
+        </tr>
+    </table>
 
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/epuck.js"></script>

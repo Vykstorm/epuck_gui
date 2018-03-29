@@ -1,6 +1,6 @@
 
 
-body {
-    width : 640px;
-    height : 480px;
+#motors_info_panel > div {
+    width : 150px;
 }
+

@@ -1,0 +1,119 @@
+
+#epuck_top_view {
+    width : 400px;
+    height : 400px;
+}
+
+#prox_sensors_panel {
+    position : relative;
+}
+
+.prox_sensor {
+    position : absolute;
+}
+
+.prox_sensor img {
+    visibility : hidden;
+    width : 35px;
+    height : 35px;
+}
+
+
+#ir0 {
+
+left: 206px;
+top: 75px;
+
+}
+
+
+#ir0 img {
+
+transform : rotate(-75deg);
+
+}
+
+
+#ir1 {
+
+left: 263px;
+top: 109px;
+
+}
+
+
+#ir1 img {
+
+transform : rotate(-45deg);
+
+}
+
+
+#ir2 {
+
+left: 293px;
+top: 186px;
+
+}
+
+
+#ir2 img {
+
+transform : rotate(0deg);
+
+}
+
+
+#ir3 {
+
+left: 227px;
+top: 282px;
+
+}
+
+
+#ir3 img {
+
+transform : rotate(60deg);
+
+}
+
+
+#ir4 {
+    left : 139px;
+    top : 282px;
+}
+
+#ir4 img {
+    transform : rotate(120deg);
+}
+
+
+#ir5 {
+    left : 73px;
+    top : 186px;
+}
+
+#ir5 img {
+    transform : rotate(180deg);
+}
+
+
+#ir6 {
+    left : 103px;
+    top : 109px;
+}
+
+#ir6 img {
+    transform : rotate(225deg);
+}
+
+
+#ir7 {
+    left : 160px;
+    top : 75px;
+}
+
+#ir7 img {
+    transform : rotate(260deg);
+}
