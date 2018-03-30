@@ -50,8 +50,9 @@ class EPuckReader(Thread):
         try:
             self._run()
         except Exception as e:
-            print(e)
+            pass
         finally:
+            self.alive = False
             self.socket.close()
 
     def _run(self):
