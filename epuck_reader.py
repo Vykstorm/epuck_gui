@@ -26,7 +26,9 @@ class EPuckReader(Thread):
         super().__init__()
 
         self.socket = socket(AF_INET, SOCK_STREAM)
+        self.socket.settimeout(20)
         self.socket.connect((address, port))
+        self.socket.settimeout(None)
 
         self._alive = True
         self._alive_lock = Lock()
