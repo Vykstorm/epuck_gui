@@ -35,7 +35,7 @@ setInterval = function(callback, time_interval) {
 async function update_prox_sensors() {
     var update_sensor = function(index, value) {
         image = $('#ir' + index + ' img').first()
-        if(value < 200) {
+        if(!value || value < 200) {
             image.css('visibility', 'hidden')
             image.attr('src', 'images/signal1.png')
         }
