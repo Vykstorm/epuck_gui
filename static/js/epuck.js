@@ -64,10 +64,16 @@ async function update_light_sensor() {
 
 async function update_vision_sensor() {
     let value = await eel.get_vision_sensor()()
-    blob = b64toBlob(value, 'image/jpeg')
-
-    var url_factory = window.URL || window.webkitURL;
-    var url = url_factory.createObjectURL( blob );
+    console.log(value)
+    var url
+    if(!value) {
+        url = 'images/camera_disconnected.png'
+    }
+    else {
+        blob = b64toBlob(value, 'image/jpeg')
+        var url_factory = window.URL || window.webkitURL;
+        url = url_factory.createObjectURL( blob );
+    }
     var image = document.querySelector( "#vision_sensor" );
     image.src = url;
 
