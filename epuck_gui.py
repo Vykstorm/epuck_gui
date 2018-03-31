@@ -4,6 +4,8 @@ from threading import Lock
 from flask import Flask
 from os.path import join, dirname
 from time import sleep, clock
+import argparse
+import sys
 
 
 app = Flask(__name__)
@@ -62,4 +64,6 @@ def data():
 
 
 if __name__ == '__main__':
-    app.run()
+    host = sys.argv[1]
+    port = int(sys.argv[2])
+    app.run(host = host, port = port)
