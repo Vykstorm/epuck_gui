@@ -32,39 +32,35 @@ setInterval = function(callback, time_interval) {
 }
 
 
-async function update_prox_sensors() {
+function update_prox_sensors(values) {
     var update_sensor = function(index, value) {
         image = $('#ir' + index + ' img').first()
         if(!value || value < 200) {
             image.css('visibility', 'hidden')
-            image.attr('src', 'images/signal1.png')
+            image.attr('src', '/static/images/signal1.png')
         }
         else {
             scale = Math.floor((value / 3000) * 4)
             scale = Math.max(Math.min(scale, 3), 0)
-            image.attr('src', 'images/signal' + (scale + 1) + '.png')
+            image.attr('src', '/static/images/signal' + (scale + 1) + '.png')
             image.css('visibility', 'visible')
         }
     }
-
-    let values = await eel.get_prox_sensors()()
 
     for(var i = 0; i < 8; i++) {
         update_sensor(i, values[i])
     }
 }
 
-async function update_floor_sensors() {
-    let values = await eel.get_floor_sensors()()
+function update_floor_sensors(values) {
+
 }
 
-async function update_light_sensor() {
-    let value = await eel.get_light_sensor()()
+function update_light_sensor() {
+
 }
 
-async function update_vision_sensor() {
-    let value = await eel.get_vision_sensor()()
-    console.log(value)
+function update_vision_sensor(value) {
     var url
     if(!value) {
         url = 'images/camera_disconnected.png'
@@ -79,8 +75,7 @@ async function update_vision_sensor() {
 
 }
 
-async function update_vision_sensor_params() {
-    let params = await eel.get_vision_sensor_params()()
+function update_vision_sensor_params(params) {
     mode = params[0]
     size = params[1]
     zoom = params[2]
@@ -89,28 +84,25 @@ async function update_vision_sensor_params() {
     $('#vision_sensor_zoom').text('x' + zoom)
 }
 
-async function update_leds() {
-    let leds = await eel.get_leds()()
+function update_leds(states) {
+
 }
 
-async function update_motors() {
-    let motors = await eel.get_motors()()
+function update_motors(speeds) {
 
     var update_motor = function(label, value) {
         rpm = value / (2 * Math.PI)
         label.text(rpm.toFixed(2))
     }
 
-    update_motor($('#left_motor'), motors[0])
-    update_motor($('#right_motor'), motors[1])
+    update_motor($('#left_motor'), speeds[0])
+    update_motor($('#right_motor'), speeds[1])
 }
 
-async function update_performance_info() {
-    let info = await eel.get_performance_info()()
+function update_performance_info(info) {
     steps_per_second = info['steps_per_second']
     update_time = info['update_time'] * 1000
     think_time = info['think_time'] * 1000
-
 
     $('#steps_per_second').text(Math.floor(steps_per_second))
     $('#update_time').text(update_time.toFixed(4))
@@ -118,13 +110,37 @@ async function update_performance_info() {
 }
 
 
+current_data = undefined
+
+function update(data) {
+    update_prox_sensors(data['prox_sensors'])
+    update_floor_sensors(data['floor_sensors'])
+    update_vision_sensor(data['vision_sensor'])
+    update_vision_sensor_params(data['vision_sensor_params'])
+    update_motors(data['motors'])
+    // update_leds()
+    // update_light_sensor()
+
+    if(current_data == undefined) {
+        update_performance_info(data)
+    }
+    current_data = data
+}
+
+
 $(document).ready(function() {
-    setInterval(update_performance_info, 250)
-    setInterval(update_vision_sensor, 150)
-    setInterval(update_vision_sensor_params, 1000)
-    setInterval(update_prox_sensors, 100)
-    setInterval(update_floor_sensors, 100)
-    setInterval(update_light_sensor, 100)
-    setInterval(update_motors, 100)
-    setInterval(update_leds, 100)
+    var get_data = function() {
+        $.getJSON('/data', function(data) {
+            update(data)
+            get_data()
+        })
+    }
+    get_data()
+
+    // Solo refrescamos cada 850 mills la información relativa al rendimiento del controlador.
+    setInterval(function() {
+        if(current_data != undefined) {
+            update_performance_info(current_data)
+        }
+    }, 850)
 })

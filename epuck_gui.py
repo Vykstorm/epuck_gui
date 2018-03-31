@@ -1,68 +1,26 @@
 
-
-import eel
 from epuck_reader import EPuckReader
 from threading import Lock
+from flask import Flask
+from os.path import join, dirname
+from time import sleep, clock
 
 
-# Opciones para la interfaz de usuario
-
-static_path = 'static'
-
-app_options = {
-    'mode' : 'chrome',
-    'host' : 'localhost',
-    'port' : 8000,
-    'chromeFlags' : []
-}
+app = Flask(__name__)
 
 
-# Funciones expuestas para ser invocadas desde Javascript
 
-@eel.expose
-def get_prox_sensors():
-    return get_epuck_data().prox_sensors
+# Limitamos la cantidad máxima de requests via http para actualizar la info de los sensores / actuadores del epuck
+# en la interfaz de usuario.
+max_requests_per_sec = 10
 
-@eel.expose
-def get_floor_sensors():
-    return get_epuck_data().floor_sensors
 
-@eel.expose
-def get_light_sensor():
-    value = get_epuck_data().light_sensor
-    # TODO
-    return None
 
-@eel.expose
-def get_vision_sensor():
-    image = get_epuck_data().vision_sensor
-    return image
-
-@eel.expose
-def get_vision_sensor_params():
-    return get_epuck_data().vision_sensor_params
-
-@eel.expose
-def get_leds():
-    return get_epuck_data().leds
-
-@eel.expose
-def get_motors():
-    return get_epuck_data().motors
-
-@eel.expose
-def get_performance_info():
-    data = get_epuck_data()
-    return {
-        'elapsed_time' : data.elapsed_time,
-        'update_time' : data.update_time,
-        'steps_per_second' : data.steps_per_second,
-        'think_time' : data.think_time
-    }
-
+# Métodos auxiliares
 
 _epuck_lock = Lock()
 epuck = None
+
 
 def get_epuck_data():
     global epuck
@@ -77,7 +35,31 @@ def get_epuck_data():
         return epuck.data
 
 
+@app.route('/')
+@app.route('/epuck')
+def main():
+    with open(join(dirname(__file__), 'static', 'main.html')) as html:
+        return html.read()
+
+
+_last_request_time = None
+
+@app.route('/data')
+def data():
+    global _last_request_time
+    curr_time = clock()
+    if not _last_request_time is None and curr_time - _last_request_time < (1 / max_requests_per_sec):
+        sleep(1 / max_requests_per_sec - (curr_time - _last_request_time))
+    _last_request_time = curr_time
+
+    response = app.response_class(
+        response=get_epuck_data(),
+        status=200,
+        mimetype='application/json'
+    )
+
+    return response
+
 
 if __name__ == '__main__':
-    eel.init(static_path)
-    eel.start('main.html', options = app_options)
+    app.run()

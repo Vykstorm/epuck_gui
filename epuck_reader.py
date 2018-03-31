@@ -75,8 +75,7 @@ class EPuckReader(Thread):
         raw_data = self._read_raw_data()
         data_len, data = struct.unpack('!i', raw_data[16:20])[0], raw_data[20:]
         data = zlib.decompress(data[:data_len])
-        data = json.loads(struct.unpack('!{}s'.format(len(data)), data)[0].decode())
-        data = Namespace(**data)
+        data = struct.unpack('!{}s'.format(len(data)), data)[0].decode()
 
         with self._data_lock:
             self._data = data
